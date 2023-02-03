@@ -1,0 +1,59 @@
+\documentclass{scrreprt}
+
+% Core packages.
+\usepackage[USenglish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Math packages.
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+% Referencing.
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{cleveref}
+% Other packages.
+\usepackage{csquotes}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{xspace}
+
+% Style.
+\MakeOuterQuote{"}
+\mathtoolsset{showonlyrefs, showmanualtags}
+
+% Macros.
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\fromabove}{\downarrow}
+\newcommand{\frombelow}{\uparrow}
+\newcommand{\transposed}{{\intercal}}
+\newcommand{\given}{\,\vert\,}
+\newcommand{\biggiven}{\,\big\vert\,}
+\newcommand{\Biggiven}{\,\Big\vert\,}
+\newcommand{\bigggiven}{\,\bigg\vert\,}
+\newcommand{\Bigggiven}{\,\Bigg\vert\,}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\th}{\textsuperscript{th}\xspace}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Var}{Var}
+
+% Other.
+\newenvironment{solution}{\paragraph{Solution.}}{}
+
+% Theorem environment.
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+% Document information.
+\title{Statistical Learning Theory Homework}
+\subtitle{CSC2532\footnote{Prof.~Erdogdu, University of Toronto, \url{https://erdogdu.github.io/csc2532/}}}
+\author{Fabian Damken}
+\date{\today}
+
+\begin{document}
+    \maketitle
+
+    \include{hw0}
+\end{document}

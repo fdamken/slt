@@ -1,0 +1,273 @@
+\setcounter{chapter}{-1}
+
+\chapter{Preliminaries}
+
+\section{Calculus}
+    \subsection{Directional Derivative and Gradient}
+        For a \(f : \R^d \to \R\) and a unit vector \(u \in \R^d\), i.e., \(\norm{u}_2 = 1\), the directional derivative of \(f\) is given as \(\grad_u f(x) = \lim_{h \fromabove 0} \bigl( f(x + hu) - f(x) \bigr) / h\). Show that if \(f\) is differentiable, we have \(\grad_u f(x) = \ip{\grad{f(x)}}{u}\). What does the gradient of \(f\) represent?
+
+        \begin{solution}
+            Define \(g_x(h) = f(x + h u)\). Taking the derivative of \(g\) w.r.t. \(h\) and using the multivariable chain rule, we get
+            \begin{equation}
+                g_x'(h) = \ip{\grad{f(x + h u)}}{u}.  \label{eq:task011}
+            \end{equation}
+            Moreover, for \(h = 0\), we have \( g_x'(0) = \ip{\grad{f(x)}}{u} \). By definition of the single-variable derivative, we also have
+            \begin{equation}
+                g_x'(0)
+                    = \lim_{h \fromabove 0} \frac{1}{h} \bigl( g_x(h) - g_x(0) \bigr)
+                    = \lim_{h \fromabove 0} \frac{1}{h} \bigl( f(x + h u) - f(x) \bigr)
+                    = \grad_u f(x)
+            \end{equation}
+            Hence, equating this with \cref{eq:task011} yields \(\grad_u f(x) = \ip{\grad{f(x + h u)}}{u}\).
+
+            We can view the gradient as the directional derivative along of basis vector, i.e.,
+            \begin{equation}
+                \grad{f(x)} = \bigl( \grad_{e_1} f(x), \grad_{e_2} f(x), \dots, \grad_{e_d} f(x) \bigr)^\transposed.
+            \end{equation}
+
+            \emph{Note: I looked up portions of the solution.\footnote{\url{https://math.libretexts.org/Courses/Oxnard_College/Multivariable_Calculus/02\%3A_Functions_of_Multiple_Variables_and_Partial_Derivatives/2.07\%3A_Directional_Derivatives_and_the_Gradient}}}
+        \end{solution}
+    % end
+
+    \subsection{Generalized Linear Models}
+        For a random data sample pair \((y, x)\), the population version of a (canonical) generalized linear model looks like
+        \begin{equation}
+            \ell(\beta) = \E\bigl[ \Psi(\ip{x}{\beta}) - y \ip{x}{\beta} \bigr].
+        \end{equation}
+        Show that \(\ell(\beta)\) is always convex if \(\Psi\) is convex.
+
+        \begin{solution}
+            We can proof the desired result by direct computation.
+            \begin{proof}
+                Let \(\Psi\) be convex and let \(\beta_1, \beta_2\) be vectors and \(t \in [0, 1]\). Then
+                \begin{align}
+                    \ell\bigl(t \beta_1 + (1 - t) \beta_2\bigr)
+                        &= \E\Bigl[ \Psi\bigl( \ip{x}{t \beta_1 + (1 - t) \beta_2} \bigr) - y \ip{x}{t \beta_1 + (1 - t) \beta_2} \Bigr] \\
+                        &= \E\Bigl[ \Psi\bigl(t \ip{x}{\beta_1} + (1 - t) \ip{x}{\beta_2} \bigr) - t y \ip{x}{\beta_1} - (1 - t) y \ip{x}{\beta_2} \Bigr] \\
+                        &\leq \E\bigl[ t \Psi(\ip{x}{\beta_1}) + (1 - t) \Psi(\ip{x}{\beta_2}) - t y \ip{x}{\beta_1} - (1 - t) y \ip{x}{\beta_2} \bigr] \\
+                        &= t \E\bigl[ \Psi(\ip{x}{\beta_1}) - y \ip{x}{\beta_1} \bigr] + (1 - t) \E\bigl[ \Psi(\ip{x}{\beta_2}) - y \ip{x}{\beta_2} \bigr] \\
+                        &= t \ell(\beta_1) + (1 - t) \ell(\beta_2)
+                \end{align}
+                Therefore, \(\ell\) is convex.
+            \end{proof}
+        \end{solution}
+    % end
+% end
+
+\section{Linear Algebra}
+    \subsection{Dual Norm of the \texorpdfstring{\(\ell_2\)}{l2}-Norm}
+        For a given norm \(\norm{\cdot}\) and a vector \(x \in \R^d\), the dual norm is defined as \(\norm{x}_\ast = \sup_{\norm{u} \leq 1} \ip{u}{x}\) where \(\ip{u}{x} = u^\transposed x\). Find the dual norm of the \(\ell_2\)-norm.
+
+        \begin{solution}
+            The dual norm of the \(\ell_2\)-norm is the \(\ell_2\)-norm itself.
+            \begin{proof}
+                Let \(x \in \R^d\) be arbitrary and suppose that \(x \neq 0\) (if \(x = 0\), then \(\ip{u}{x} = 0\) for all \(u\) and \(\norm{x}_2 = 0\), so there is nothing to show). Then
+                \begin{equation}
+                    \norm{x}_\ast
+                        = \sup_{\norm{u}_2 \leq 1} \ip{u}{x}
+                        \leq \sup_{\norm{u}_2 \leq 1} \abs{\ip{u}{x}}
+                        \leq \sup_{\norm{u}_2 \leq 1} \norm{u}_2 \norm{x}_2
+                        \leq \norm{x}_2
+                \end{equation}
+                by the Schwartz inequality and due to the \(\ell_2\)-norm being induced by the given inner product. Conversely, set \(\tilde{u} = x / \norm{x}_2\). Then \(\norm{\tilde{u}}_2 = 1\) and
+                \begin{equation}
+                    \norm{x}_2^2
+                        = \ip{x}{x}
+                        = \norm{x}_2 \ip{\tilde{u}}{x}.
+                \end{equation}
+                Therefore,
+                \begin{equation}
+                    \norm{x}_2
+                        = \ip{\tilde{u}}{x}
+                        \leq \sup_{\norm{u}_2 \leq 1} \ip{u}{x}
+                        = \norm{x}_\ast,
+                \end{equation}
+                and we have the desired result \(\norm{\cdot}_\ast = \norm{\cdot}_2\).
+            \end{proof}
+        \end{solution}
+    % end
+
+    \subsection{Dual Norm of the \texorpdfstring{\(\ell_1\)}{l1}-Norm}
+        Using the previous definition, find the dual norm of the \(\ell_1\)-norm.
+
+        \begin{solution}
+            The dual norm of the \(\ell_1\)-norm is the \(\ell_\infty\)-norm.
+            \begin{proof}
+                Let \(x \in \R^d\) and let \(i \in \{ 1, 2, \dots, d \}\) such that \(\abs{x_i} = \norm{x}_\infty\) (i.e., \(i\) is the index of maximal magnitude). Consider \(\tilde{u} = e_i \sign x_i\), where \(e_i\) is the \(i\)\th unit vector. Then \(\norm{\tilde{u}}_1 = 1\) and \(\abs{x_i} = \ip{\tilde{u}}{x}\). Hence,
+                \begin{equation}
+                    \norm{x}_\infty
+                        = \abs{x_i}
+                        = \ip{\tilde{u}}{x}
+                        \leq \sup_{\norm{u}_1 \leq 1} \ip{u}{x}
+                        = \norm{x}_\ast.
+                \end{equation}
+                For the converse, let \(\vec{u} \in \R^d\) with \(\norm{u}_1 \leq 1\). Then
+                \begin{equation}
+                    \ip{u}{x}
+                        \leq \abs{\ip{u}{x}}
+                        \leq \abs{\sum_{i = 1}^{d} u_i x_i}
+                        \leq \sum_{i = 1}^{d} \abs{u_i} \abs{x_i}
+                        \leq \norm{x}_\infty \sum_{i = 1}^{d} \abs{u_i}
+                        = \norm{x}_\infty \norm{u}_1
+                        \leq \norm{x}_\infty.
+                \end{equation}
+                Hence, we have \( \norm{x}_\ast \leq \norm{x}_\infty \) and therefore, we get the desired \(\norm{\cdot}_\ast = \norm{\cdot}_\infty\).
+            \end{proof}
+        \end{solution}
+    % end
+
+    \subsection{Expectation of the \texorpdfstring{\(\ell_2\)}{l2}-Norm}
+        For a random vector \(x \in \R^d\) with \(\E[x] = \mu\) and \(\Var[x] = \Sigma\), give an expression for \(\E\bigl[ \norm{x}_2^2 \bigr]\) in terms of \(\mu\) and \(\Sigma\).
+
+        \begin{solution}
+            Using the definition of the variance, we have
+            \begin{equation}
+                \Var[x]
+                    = \Sigma
+                    = \E[x x^\transposed] - \E[x] \E^\transposed[x]
+                    = \E[x x^\transposed] - \mu \mu^\transposed.
+            \end{equation}
+            Applying the trace and exploiting its linearity and cyclicity yields
+            \begin{equation}
+                \tr(\Sigma)
+                    = \E\bigl[ \tr(x x^\transposed) \bigr] - \tr\bigl( \mu \mu^\transposed \bigr)
+                    = \E\bigl[ \tr(x^\transposed x) \bigr] - \tr\bigl( \mu^\transposed \mu \bigr)
+                    = \E\bigl[ \norm{x}_2^2 \bigr] - \norm{\mu}_2^2.
+            \end{equation}
+            Solving for \(\E\bigl[ \norm{x}_2^2 \bigr]\) and using \( \norm{x}_2^2 = x^\transposed x \) yields the nice \( \E\bigl[ \norm{x}_2^2 \bigr] = \norm{\mu}_2^2 + \tr(\Sigma) \).
+        \end{solution}
+    % end
+% end
+
+\section{Probability}
+    \subsection{Law of Iterated Expectation}
+        For random variables \(X\), \(Y\), and \(Z\), show that
+        \begin{equation}
+            \E\bigl[ \E[X \given Y, Z] \biggiven Z \bigr] = \E[X \given Z].
+        \end{equation}
+
+        \begin{solution}
+            We only show the result for continuous random variables (the argument works analogously in the discrete case).
+            \begin{proof}
+                Using the chain rule \( p(x \given y, z) p(y \given z) = p(x, y \given z) \), we have:
+                \begin{align}
+                    \E\bigl[ \E[X \given Y, Z] \biggiven Z \bigr]
+                        &= \iint x \, p(x \given y, z) p(y \given z) \dd{y} \dd{z}
+                         = \iint x \, p(x, y \given z) \dd{y} \dd{z} \\
+                        &= \int x \int x \, p(x, y \given z) \dd{y} \dd{z}
+                         = \int x \, p(x \given z) \dd{z}
+                         = \E[X \given Z]
+                \end{align}
+            \end{proof}
+        \end{solution}
+    % end
+
+    \subsection{Integration by Parts}
+        For a nonnegative random variable X, show that
+        \begin{equation}
+            \int_{0}^{\infty} \P(X > t) \dd{t} = \E[X].
+        \end{equation}
+        What condition do you need?
+
+        \begin{solution}
+            \begin{proof}
+                Let \(X\) be a nonnegative random variable with cumulative distribution function \(F_X\) and probability density \(f_X\). Furthermore, assume that\footnote{This is the condition asked for in the question. Intuitively, it means that the probability of large values of \(X\) shrinks superlinearly. This is not a superficial assumption considering that it holds for most distributions (in particular, for the exponential family).}
+                \begin{equation}
+                    \lim_{T \to \infty} T \, \P(X > T) = 0
+                \end{equation}
+                holds. Let \(T > 0\). Then we have the following:
+                \begin{align}
+                    \int_{0}^{T} t f_X(t) \dd{t}
+                        &= \bigl[ t F_X(t) \bigr]_{t = 0}^{t = T} - \int_{0}^{T} F_X(t) \dd{t}
+                         = T F_X(T) - \int_{0}^{T} F_X(t) \dd{t} \\
+                        &= T \bigl( 1 - \P(X > T) \bigr) - \int_{0}^{T} \bigl( 1 - \P(X > t) \bigr) \dd{t} \\
+                        &= T - T \, \P(X > T) - [t]_{t = 0}^{t = T} + \int_{0}^{T} \P(X > t) \dd{t} \\
+                        &= T - T \, \P(X > T) - T + \int_{0}^{T} \P(X > t) \dd{t}
+                         = -T \P(X > T) + \int_{0}^{T} \P(X > t) \dd{t}
+                \end{align}
+                Taking now \(T \to \infty\), we get the desired
+                \begin{equation}
+                    \E[X]
+                        = \lim_{T \to \infty} \int_{0}^{T} t f_X(t) \dd{t}
+                        = \lim_{T \to \infty} -T \, \P(X > T) + \int_{0}^{T} \P(X > t) \dd{t}
+                        = \int_{0}^{\infty} \P(X > t) \dd{t}.
+                \end{equation}
+            \end{proof}
+        \end{solution}
+    % end
+
+    \subsection{Total Variation Distance}
+        The \emph{total variation distance} between two probability measures \(p\) and \(q\) on a countable set \(\Omega\) is defined as
+        \begin{equation}
+            d_\mathrm{TV}(p, q) = \sup_{A \subseteq \Omega} \abs{p(A) - q(A)}.
+        \end{equation}
+        Show that \(d_\mathrm{TV}(p, q) = \flatfrac{\norm{p - q}_1}{2}\) where \(\norm{p - q}_1\) is defined as
+        \begin{equation}
+            \norm{p - q}_1 = \sum_{\omega \in \Omega} \abs{p(\omega) - q(\omega)}.
+        \end{equation}
+
+        \begin{solution}
+            \begin{lemma}  \label{lm:task033a}
+                Let \(B \subseteq \Omega\) be some event in \(\Omega\). Define \(B_\geq\) and \(B_<\) as follows:
+                \begin{align}
+                    B_\geq &\coloneqq \bigl\{ \omega \in B : p(\omega) \geq q(\omega) \bigr\} &
+                    B_< &\coloneqq \bigl\{ \omega \in B : p(\omega) < q(\omega) \bigr\}
+                \end{align}
+                For two sets \(B, B' \subseteq \Omega\) we write \(B \preceq B'\) if and only if \(B_\geq \subseteq B'_\geq\) and \(B_< \supseteq B'_<\). This is a partial order on \(2^\Omega\) with maximum \(C \coloneqq \Omega_\geq\).
+            \end{lemma}
+            \begin{proof}
+                We show the three axioms of a partial order:
+                \begin{itemize}
+                    \item Clearly, \(B \preceq B\) for all \(B \subseteq \Omega\).
+                    \item Let \(B, B' \subseteq \Omega\) such that \(B \preceq B'\) and \(B' \preceq B\). Then \(B_\geq = B'_\geq\) and \(B_< = B'_<\). As \(B\) and \(B'\) are partitioned by said sets, we have \(B = B'\).
+                    \item Let \(B, B', B'' \subseteq \Omega\) such that \(B \preceq B'\) and \(B' \preceq B''\). Clearly, then also \(B \preceq B''\).
+                \end{itemize}
+                Thus, \(\preceq\) is a partial order on \(2^\Omega\). We show that \(C = \Omega_\geq\) is the maximum element. Let \(B \subseteq \Omega\). Then
+                \begin{equation}
+                    B_\geq
+                        = \bigl\{ \omega \in B : p(\omega) \geq q(\omega) \bigr\}
+                        \subseteq \bigl\{ \omega \in \Omega : p(\omega) \geq q(\omega) \bigr\}
+                        = C_\geq
+                \end{equation}
+                Also, \(B_< \supseteq \emptyset = C_<\). Hence, \(B \preceq C\). As \(B\) was an arbitrary set and it is comparable to \(C\) with \(B \preceq C\), \(C\) is the maximum element.
+            \end{proof}
+
+            \begin{lemma}  \label{lm:task033b}
+                For two sets \(B, B' \subseteq \Omega\) we have \( \abs{p(B) - q(B)} \leq \abs{p(B') - q(B')} \) if \(B \preceq B'\).
+            \end{lemma}
+            \begin{proof}
+                Suppose that \(B \preceq B'\). Then \(p(B_\geq) - q(B_\geq) \leq p(B'_\geq) - q(B'_\geq)\) and \(p(B_<) - q(B_<) \geq p(B'_<) - q(B'_<)\). Thus,
+                \begin{align}
+                    \abs{p(B) - q(B)}
+                        &= p(B_\geq) - q(B_\geq) - \bigl( p(B_<) - q(B_<) \bigr) \\
+                        &\leq p(B'_\geq) - q(B'_\geq) - \bigl( p(B'_<) - q(B'_<) \bigr)
+                         = \abs{p(B') - q(B')}.
+                \end{align}
+                This shows the claim.
+            \end{proof}
+
+            \begin{theorem}
+                For two probability measures on a countable set \(\Omega\), we have
+                \begin{equation}
+                    d_\mathrm{TV}(p, q) = \frac{1}{2} \sum_{\omega \in \Omega} \abs{p(\omega) - q(\omega)}.
+                \end{equation}
+            \end{theorem}
+            \begin{proof}
+                Due to \cref{lm:task033b}, the maximum \(C = \Omega_\geq\) of \cref{lm:task033a} is equal to the supremum (as it is an upper bound for all subsets by the above lemma and is a subset of \(\Omega\) itself). That is, \(d_\mathrm{TV}(p, q) = \abs{p(C) - q(C)}\). We can now partition \(\Omega\) as \(\Omega = C \cup C^\complement\) and get
+                \begin{align}
+                    \norm{p - q}_1
+                        &= \sum_{\omega \in \Omega} \abs{p(\omega) - q(\omega)}
+                         = \sum_{\omega \in C} \abs{p(\omega) - q(\omega)}
+                         + \sum_{\omega \in C^\complement} \abs{p(\omega) - q(\omega)} \\
+                        &= \sum_{\omega \in C} p(\omega) - q(\omega)
+                         + \sum_{\omega \in C^\complement} q(\omega) - p(\omega)
+                         = p(C) - q(C) + q\Bigl( C^\complement \Bigr) - p\Bigl( C^\complement \Bigr) \\
+                        &= p(C) - q(C) + 1 - q(C) - 1 + p(C)
+                         = 2 \bigl( p(C) - q(C) \bigr)
+                         = 2 \, d_\mathrm{TV}(p, q)
+                \end{align}
+                This shows the desired claim by dividing both sides by two.
+            \end{proof}
+        \end{solution}
+    % end
+% end
